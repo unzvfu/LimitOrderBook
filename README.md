@@ -29,3 +29,20 @@ score
 mean(latency) = 6841.67, sd(latency) = 3875.97
 You scored 5358.82. Try to minimize this.
 ```
+
+Price Level List
+
+add order: O(n)
+
+delete order: O(n)
+
+The next approach I took is to create a double linked list of all the orders of the same price, and use another double linked list to link through all these price levels.
+
+The benefits of this is that it's very easy to scan through the price level to look for a particular price, and every time adding a new order just means to add the order to the very end of its own price level.
+
+However, surprisingly the performance score does not improve by much. Either some details of my implementation is not working as expected, or there is more work to be done to make it run faster.
+
+```
+mean(latency) = 6701.25, sd(latency) = 3746.64
+You scored 5223.94. Try to minimize this.
+```
