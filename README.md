@@ -30,7 +30,7 @@ mean(latency) = 6841.67, sd(latency) = 3875.97
 You scored 5358.82. Try to minimize this.
 ```
 
-Price Level List
+### Price Level List
 
 add order: O(n)
 
@@ -45,4 +45,27 @@ However, surprisingly the performance score does not improve by much. Either som
 ```
 mean(latency) = 6701.25, sd(latency) = 3746.64
 You scored 5223.94. Try to minimize this.
+```
+
+### Statically allocated Price Level List
+
+add order: O(1)
+
+delete order: O(1)
+
+I referenced the winning solution from `winning_engine.c` and get some inspirations.
+
+This solution relies a lot on the constraints that there is lower limit and upper limit for the possible price range. So we can allocate a single list of resting orders per price, and statically allocate an array, whose index is the price and points to the price level head.
+
+In the price level, we maintain a tail pointer so that to add an order to this price level is O(1) operations. And to delete an order, since we have an statically allocated order slot, the index is order id. We can directly find that order and mark its size to 0.
+
+The downside of this approach is, when you are iterating over a price level, you might find some "junk order" who is already deleted and thus cause internal fragmentations in the list. Luckily, once the whole price level is exhaust, the head order pointer  for this price level will be reset, which essentially remove all the framentations in this price leve.
+
+Technically my current solution is the exact same as the winning solution. However, there is still a huge difference in the final scoring. I didn't apply some optimization tricks like the `strcpy` as the winning solution author did. But I would be surprised if that could bring that much of a difference.
+
+I would try to profile the program a little bit more to see where is the bottle neck difference between my solution and the winning solution.
+
+```
+mean(latency) = 5847.56, sd(latency) = 1497.84
+You scored 3672.70. Try to minimize this.
 ```
