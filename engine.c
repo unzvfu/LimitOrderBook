@@ -14,8 +14,8 @@
 // key types definition
 typedef struct resting_order {
   t_size size;
-  char trader[STRINGLEN];
   struct resting_order *next;
+  char trader[STRINGLEN];
 } resting_order_t;
 
 typedef struct price_level {
@@ -32,6 +32,10 @@ static t_price best_ask;
 
 static t_orderid id_counter;
 
+// #define STR_COPY(DEST, SRC) {strcpy(DEST, SRC);}
+// #define STR_COPY(DEST, SRC) {strncpy(DEST, SRC, STRINGLEN);}
+#define STR_COPY(DEST, SRC) {DEST[0] = SRC[0]; DEST[1] = SRC[1]; DEST[2] = SRC[2]; DEST[3] = SRC[3]; DEST[4] = SRC[4];}
+
 // utility functions
 void place_resting_order(t_orderid id, t_order order) {
   if (order.size == 0) { return; }
@@ -40,7 +44,7 @@ void place_resting_order(t_orderid id, t_order order) {
 
   // prepare the slot
   o_slot->size = order.size;
-  strcpy(o_slot->trader, order.trader);
+  STR_COPY(o_slot->trader, order.trader);
 
   if (!pl->head) {
     // first order in this price level
@@ -65,18 +69,18 @@ void place_resting_order(t_orderid id, t_order order) {
 void report_execution(t_price price, t_size size, const char *symbol, const char *buyer, const char *seller) {
   if (size == 0) { return; }
   t_execution exe;
-  strcpy(exe.symbol, symbol);
+  STR_COPY(exe.symbol, symbol);
   exe.price = price;
   exe.size = size;
 
   // report buyer
   exe.side = 0;
-  strcpy(exe.trader, buyer);
+  STR_COPY(exe.trader, buyer);
   execution(exe);
 
   // report seller
   exe.side = 1;
-  strcpy(exe.trader, seller);
+  STR_COPY(exe.trader, seller);
   execution(exe);
 }
 

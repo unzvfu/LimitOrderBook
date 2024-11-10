@@ -69,3 +69,41 @@ I would try to profile the program a little bit more to see where is the bottle 
 mean(latency) = 5847.56, sd(latency) = 1497.84
 You scored 3672.70. Try to minimize this.
 ```
+
+### String copy optimization
+
+So I open a t2.micro free AWS Linux server to better do benchmark. The winning solution has the following scores:
+
+```
+mean(latency) = 749.75, sd(latency) = 10772.27
+You scored 5761.01. Try to minimize this.
+```
+
+I found one critical performance difference between my almost-same solution and the winning solution is in string copy.
+
+I originally use the vanilia `strcpy` yet he used the loop unrolling version of hard-coded 4 character copy.
+
+I tried it out and indeed it brings considerable performance boost. The principle is on, it eliminates the condition branching.
+
+`strcpy` performance:
+
+```
+mean(latency) = 1118.85, sd(latency) = 13952.68
+You scored 7535.77. Try to minimize this.
+```
+
+`strncpy` performance:
+
+```
+mean(latency) = 961.76, sd(latency) = 13507.53
+You scored 7234.65. Try to minimize this.
+```
+
+`loop unrolling` performance:
+
+```
+mean(latency) = 916.31, sd(latency) = 12983.65
+You scored 6949.98. Try to minimize this.
+```
+
+So by doing this string optimization, we get closer to the winning solution
