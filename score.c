@@ -38,8 +38,8 @@ void current_utc_time(struct timespec *ts) {
 }
 
 
-int msg_batch_size = 10;
-int replays = 200;
+int msg_batch_size = 200;
+int replays = 2000;
 void execution(t_execution exec) {};
 
 int main() {
