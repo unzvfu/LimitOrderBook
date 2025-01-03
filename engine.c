@@ -24,7 +24,8 @@ typedef struct price_level {
 } price_level_t;
 
 // globals
-static resting_order_t order_slots[MAX_LIVE_ORDERS+1];
+#define MAX_ORDER_NUM (1024 * 1024)
+static resting_order_t order_slots[MAX_ORDER_NUM];
 static price_level_t order_book[MAX_PRICE+1];
 
 static t_price best_bid;
@@ -34,7 +35,8 @@ static t_orderid id_counter;
 
 // #define STR_COPY(DEST, SRC) {strcpy(DEST, SRC);}
 // #define STR_COPY(DEST, SRC) {strncpy(DEST, SRC, STRINGLEN);}
-#define STR_COPY(DEST, SRC) {DEST[0] = SRC[0]; DEST[1] = SRC[1]; DEST[2] = SRC[2]; DEST[3] = SRC[3]; DEST[4] = SRC[4];}
+#define STR_COPY(DEST, SRC) {memcpy(DEST, SRC, STRINGLEN);}
+// #define STR_COPY(DEST, SRC) {DEST[0] = SRC[0]; DEST[1] = SRC[1]; DEST[2] = SRC[2]; DEST[3] = SRC[3]; DEST[4] = SRC[4];}
 
 // utility functions
 void place_resting_order(t_orderid id, t_order order) {

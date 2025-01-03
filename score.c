@@ -79,6 +79,9 @@ int main() {
 
   double score = 0.5 * (late_mean + late_sd);  
   printf("You scored %1.2f. Try to minimize this.\n", score);
+  printf("%1.2f\n", late_mean);
+  printf("%1.2f\n", late_sd);
+  printf("%1.2f", score);
 }
 
 void feed(unsigned begin, unsigned end) {
