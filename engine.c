@@ -112,6 +112,7 @@ t_orderid limit(t_order order) {
           report_execution(best_bid, order.size, order.symbol, head_order->trader, order.trader);
           head_order->size -= order.size;
           order.size = 0;
+          pl->head = (head_order->size != 0) ? head_order : head_order->next; // discard all exhausted order entries
           return id;
         } else {
           // resting order is filled
@@ -136,6 +137,7 @@ t_orderid limit(t_order order) {
           report_execution(best_ask, order.size, order.symbol, order.trader, head_order->trader);
           head_order->size -= order.size;
           order.size = 0;
+          pl->head = (head_order->size != 0) ? head_order : head_order->next; // discard all exhausted order entries
           return id;
         } else {
           report_execution(best_ask, head_order->size, order.symbol, order.trader, head_order->trader);

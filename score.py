@@ -55,7 +55,7 @@ def score_once():
 
 
 if __name__ == "__main__":
-    test_time = 20
+    test_time = 10
     backup()
     score_my(test_time)
     score_bench(test_time)

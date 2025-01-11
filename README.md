@@ -50,3 +50,20 @@ Among 35624000 walking through the orderbook to match, average steps 0.956
 My implementation and the benchmark implementation are more or less the same algorithm and data structure, why in matching an incoming order my implementation would have to walk so many steps into the order list?
 
 A closer look into the benchmark implementation revails that I forgot to "clear out" the exhausted order entries from the order list, accumulating a long of zombie order entries of size 0 in the resting order book.
+
+aka, this singe line from benchmark implementation is what my implementation is missing.
+
+```c
+    # after finish matching incoming order against resting order book
+    ppEntry->listHead = bookEntry;
+```
+
+After this optimization, my implementation's performance gets closer to the benchmark performance, about 5% inferior to it. So there might be some other places of details that we need to profile and iterate improvement.
+
+```bash
+Across 10 scoring:
+my implementation:        mean 2914.82 std 803.91  score 1859.37
+benchmark implementation: mean 2754.70 std 857.01  score 1805.85
+```
+
+### Profiling 2
