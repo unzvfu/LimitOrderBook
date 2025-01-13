@@ -15,7 +15,7 @@
 typedef struct resting_order {
   t_size size;
   struct resting_order *next;
-  char trader[STRINGLEN];
+  char trader[STRINGLEN-1];
 } resting_order_t;
 
 typedef struct price_level {
@@ -32,10 +32,11 @@ static t_price best_bid;
 static t_price best_ask;
 
 static t_orderid id_counter;
+static t_execution exe;
 
 // #define STR_COPY(DEST, SRC) {strcpy(DEST, SRC);}
 // #define STR_COPY(DEST, SRC) {strncpy(DEST, SRC, STRINGLEN);}
-#define STR_COPY(DEST, SRC) {memcpy(DEST, SRC, STRINGLEN);}
+#define STR_COPY(DEST, SRC) {memcpy(DEST, SRC, STRINGLEN-1);}
 // #define STR_COPY(DEST, SRC) {DEST[0] = SRC[0]; DEST[1] = SRC[1]; DEST[2] = SRC[2]; DEST[3] = SRC[3]; DEST[4] = SRC[4];}
 
 // utility functions
@@ -70,7 +71,6 @@ void place_resting_order(t_orderid id, t_order order) {
 
 void report_execution(t_price price, t_size size, const char *symbol, const char *buyer, const char *seller) {
   if (size == 0) { return; }
-  t_execution exe;
   STR_COPY(exe.symbol, symbol);
   exe.price = price;
   exe.size = size;
